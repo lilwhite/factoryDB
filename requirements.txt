@@ -2,3 +2,6 @@ mysql-connector-python
 psycopg2
 pymongo
 setuptools
+pylint
+flake8
+black

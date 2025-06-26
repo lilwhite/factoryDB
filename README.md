@@ -26,41 +26,45 @@ pip install db_connector
 O desde el repositorio:
 
 ```bash
-git clone https://github.com/tu_org/db_connector.git
-cd db_connector
+git clone https://github.com/lilwhite/factortdb.git
+cd factorydb
 pip install .
 ```
 
-## Uso básico
+## Casos de Uso
 
-```python
-from db_connector.core import DBConnector
+### UC1 – Configurar y abrir conexión  
+Actor: Usuario  
+Precondición: El usuario dispone de los datos de acceso (host, puerto, usuario, contraseña, BBDD) y especifica el tipo de motor de base de datos: **MongoDB**, **MySQL** o **PostgreSQL**.  
+Flujo principal:  
+  1. El usuario crea un diccionario `config` con los parámetros de conexión e incluye la clave `engine` con el valor del motor elegido.  
+  2. Llama a `DBConnector(config)`.  
+  3. El sistema valida parámetros y abre la conexión al motor indicado.  
+Postcondición: Conector listo para recibir consultas.  
+Flujos alternativos:  
+  • Parámetros inválidos → lanza excepción de validación.  
+  • Error de red o credenciales → lanza excepción de conexión.
+  
+### UC2 – Ejecutar consulta genérica  
+Actor: Usuario  
+Precondición: La conexión está abierta (UC1).  
+Flujo principal:  
+  1. El usuario invoca `db.read(table, filters)` o `db.execute(query, params)`.  
+  2. El sistema traduce la petición al dialecto adecuado para el motor configurado.  
+  3. Se ejecuta la consulta en la BBDD y se devuelven resultados.  
+Postcondición: Datos obtenidos en forma de lista de diccionarios (o cursor).  
+Flujos alternativos:  
+  • Sintaxis inválida → lanza excepción de ejecución.  
+  • La tabla/colección no existe → lanza excepción de recurso no encontrado.
+  
+### UC3 – Operaciones CRUD de conveniencia  
+(extendiendo UC2)  
+- **Crear**: `db.create(table, data)`  
+- **Leer**:  `db.read(table, filters)`  
+- **Actualizar**: `db.update(table, filters, data)`  
+- **Eliminar**: `db.delete(table, filters)`  
 
-# Configurar conexión (ejemplo MySQL)
-config = {
-    "engine": "mysql",
-    "host": "localhost",
-    "port": 3306,
-    "user": "root",
-    "password": "secret",
-    "database": "test_db"
-}
-
-# Instanciar conector
-db = DBConnector(config)
-
-# Crear un registro
-db.create(table="users", data={"name": "Alice", "email": "alice@example.com"})
-
-# Leer registros
-users = db.read(table="users", filters={"active": True})
-
-# Actualizar un registro
-db.update(table="users", filters={"id": 1}, data={"email": "alice@new.com"})
-
-# Eliminar un registro
-db.delete(table="users", filters={"id": 1})
-```
+Cada método implementa internamente UC2 adaptando la consulta
 
 Para más ejemplos y configuración avanzada, consulta `docs/usage.md`.
 
