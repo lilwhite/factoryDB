@@ -106,7 +106,7 @@ db_connector/                  # Raíz del proyecto
 
 **Descripción de carpetas clave:**
 
-* **src/db\_connector/connection/**: Contiene la definición de la clase base y las implementaciones concretas para cada sistema de gestión de bases de datos.
-* **src/db\_connector/core.py**: Punto central donde se abstraen las operaciones CRUD comunes y se elige el conector adecuado en tiempo de ejecución.
+* **src/factorydb/connection/**: Contiene la definición de la clase base y las implementaciones concretas para cada sistema de gestión de bases de datos.
+* **src/factorydb/core.py**: Punto central donde se abstraen las operaciones CRUD comunes y se elige el conector adecuado en tiempo de ejecución.
 * **tests/**: Estructura de pruebas por conector y para la lógica unificada.
 * **docs/**: Material complementario para desarrolladores y usuarios finales.

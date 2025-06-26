@@ -10,7 +10,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
 # Importar el conector para verificar que está disponible en los tests
-from db_connector.core import DBConnector
+from factorydb.core import DBConnector
 
 # También se pueden importar aquí las configuraciones específicas de testing,
 # como bases de datos en memoria, mocks, etc.
